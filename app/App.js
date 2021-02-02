@@ -1,12 +1,24 @@
+import 'react-native-gesture-handler';
 import React from 'react';
-import {View, Text} from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { connect } from 'react-redux';
+import { AppNavigator, AuthNavigator } from './navigation/index';
+import PropTypes from 'prop-types';
 
-const App = () => {
+const App = ({ userLoggedIn }) => {
   return (
-    <View>
-      <Text>Test</Text>
-    </View>
+    <NavigationContainer>
+      {userLoggedIn ? <AppNavigator /> : <AuthNavigator />}
+    </NavigationContainer>
   );
 };
 
-export default App;
+App.propTypes = {
+  userLoggedIn: PropTypes.bool,
+};
+
+const mapStateToProps = (state) => {
+  return { userLoggedIn: state.loginReducer.userLoggedIn };
+};
+
+export default connect(mapStateToProps)(App);
